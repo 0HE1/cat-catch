@@ -1,0 +1,353 @@
+a {
+  text-decoration: none;
+  word-break: break-all;
+}
+a:hover {
+  text-decoration: underline;
+}
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  font-size: 0.9rem;
+  width: 40rem;
+  overflow-x: hidden;
+  background: var(--background-color);
+  margin: 0;
+}
+.fixFirefoxRight {
+  margin-right: 5px;
+}
+.panel {
+  border: 1px solid #0000;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: var(--optionBox-color);
+  box-shadow: 0 6px 20px -12px rgba(0,0,0,0.2);
+}
+.panel-heading {
+  padding: 10px 10px;
+  background-color: var(--background-color-two);
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  border-radius: 10px 10px 0 0;
+}
+.panel-heading .name {
+  flex: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  margin-right: 0.2rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+.panel .url,
+.panel .confirm {
+  padding: 5px;
+}
+.icon,
+.favicon {
+  transition: all 0.1s;
+  width: 1.5rem;
+  height: 1.5rem;
+  cursor: pointer;
+}
+.faviconFlag {
+  display: none;
+}
+.icon:hover {
+  transform: scale(1.1);
+}
+.icon:active {
+  transform: scale(0.9);
+}
+.icon.mqtt-sending {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.icon.mqtt-sending:hover {
+  transform: none;
+}
+.panel-heading .icon {
+  padding-left: 2px;
+  width: 1.25rem;
+  height: 1.25rem;
+  opacity: 0.85;
+}
+.favicon {
+  padding-right: 2px;
+}
+.panel-heading .size {
+  margin-left: auto;
+  font-weight: 600;
+  opacity: 0.8;
+}
+#Tips,
+#TipsFixed {
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 9999;
+  pointer-events: none;
+  color: var(--text2-color);
+  font-weight: 600;
+  border: 1px solid #0000;
+  border-radius: 8px;
+  background: var(--background-color-two);
+  padding: 6px 12px;
+  margin-bottom: 6px;
+}
+#TipsFixed {
+  position: fixed;
+  display: none;
+}
+#preview {
+  max-height: 300px;
+  max-width: 100%;
+  text-align: center;
+  border-radius: 8px;
+}
+button,
+.button2 {
+  padding: 6px 10px;
+}
+.Tabs {
+  display: flex;
+  gap: 4px;
+}
+.TabButton {
+  text-align: center;
+  border: solid 1px #c7c7c700;
+  color: var(--text2-color);
+  border-radius: 5px 5px 0 0;
+  cursor: pointer;
+  width: 50%;
+  /* display: flex; */
+  padding: 6px;
+  margin: 1px 2px 0 2px;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  user-select: none;
+}
+.flex {
+  display: flex;
+}
+.TabButton.Active {
+  background-color: var(--background-color-two);
+  border-bottom-color: transparent;
+  font-weight: bold;
+}
+.TabButton.Active div {
+  font-weight: bold;
+}
+.DownCheck {
+  margin: 0 2px 0 0;
+  width: 1.2rem;
+  height: 1.2rem;
+  flex: 0 0 auto;
+}
+.TabShow {
+  display: block !important;
+}
+#down,
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  background-color: var(--background-color-opacity);
+  gap: 6px;
+  padding: 6px 8px;
+}
+#down {
+  bottom: 0;
+  justify-content: flex-start;
+  border-top: 1px solid #c7c7c740;
+}
+.more {
+  display: none;
+  bottom: 26px;
+  justify-content: flex-start;
+  z-index: 9999;
+}
+.more button {
+  margin-left: 0;
+  font-size: 12px;
+}
+#down button,
+#down .button2 {
+  min-width: 7rem;
+}
+
+/* 窄屏压缩布局 */
+@media (max-width: 480px) {
+  .TabButton {
+    padding: 4px;
+  }
+  #down, .more {
+    gap: 4px;
+    padding: 4px 6px;
+  }
+  #down button, #down .button2 {
+    min-width: auto;
+    flex: 0 0 auto;
+    padding: 4px 6px;
+    font-size: 12px;
+  }
+  #ThemeSwitcher {
+    gap: 4px;
+    padding: 4px 6px;
+  }
+}
+@media (max-width: 360px) {
+  #down button, #down .button2 {
+    font-size: 0;
+    padding: 4px 6px;
+  }
+  #down button::before, #down .button2::before {
+    margin-right: 0;
+    font-size: 16px;
+    line-height: 1;
+    display: inline-block;
+  }
+  /* 为不同按钮提供直观emoji，跨浏览器兼容 */
+  #mergeDown::before { content: '🔗'; }
+  #DownFile::before { content: '⬇️'; }
+  #AllCopy::before { content: '📋'; }
+  #AllSelect::before { content: '✔️'; }
+  #invertSelection::before { content: '↕'; }
+  #openFilter::before { content: '🔎'; }
+  #Clear::before { content: '🗑️'; }
+  #search::before { content: '🔍'; }
+  #catch::before { content: '📦'; }
+  #more::before { content: '⋯'; }
+  #enable::before { content: '⏸'; }
+  #Options::before { content: '⚙️'; }
+  #popup::before { content: '🗔'; }
+}
+#filter {
+  flex-wrap: wrap;
+}
+#filter #regular button {
+  margin-left: 0px;
+}
+#filter #regular input {
+  width: 98%;
+}
+#filter .regular {
+  margin-left: 5px;
+}
+#filter #ext {
+  display: flex;
+  color: var(--text-color);
+}
+#filter div {
+  margin-left: 5px;
+}
+.flexFilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.container {
+  margin-bottom: 30px;
+  padding: 6px;
+}
+#screenshots {
+  max-width: 100%;
+  max-height: 260px;
+  cursor: pointer;
+  margin: auto;
+}
+.flex-end {
+  justify-content: flex-end;
+}
+#otherOptions {
+  margin: 5px;
+}
+#PlayControl {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+#PlayControl .button2,
+#PlayControl .button {
+  margin-left: 2px;
+}
+#PlayControl #playbackRate {
+  width: 3em;
+  height: 20px;
+}
+#otherOptions select {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  width: 100%;
+}
+#PlayControl .loop {
+  margin: 0 5px 0 5px;
+}
+label {
+  cursor: pointer;
+  user-select: none;
+}
+#PlayControl .volume {
+  width: 100px;
+}
+.flexColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.nowrap {
+  word-break: keep-all;
+}
+.otherScript .button2,
+.otherFeat .button2 {
+  width: 100%;
+  margin-right: 10px;
+  text-align: center;
+}
+.otherTips {
+  text-align: center;
+  color: var(--text2-color);
+  font-weight: bold;
+}
+.moreButton {
+  display: flex;
+}
+.moreButton div {
+  margin-right: 3px;
+}
+.panel .confirm {
+  text-align: center;
+}
+
+/* 主题切换条 */
+#ThemeSwitcher {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 4px 6px;
+  background-color: var(--background-color-two);
+  border-radius: 8px;
+}
+#ThemeSwitcher .nowrap {
+  margin-right: 6px;
+}
+#ThemeSwitcher .button {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+#ThemeSwitcher .button.Active {
+  background: var(--button-hover-color);
+}
