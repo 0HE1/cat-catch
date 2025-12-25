@@ -1033,8 +1033,8 @@ function catDownload(data, extra = {}) {
     // 储存数据到临时变量 提高检索速度
     localStorage.setItem('downloadData', JSON.stringify(data));
 
-    // 如果大于2G 询问是否使用流式下载
-    if (!extra.ffmpeg && !G.downStream && Math.max(...data.map(item => item._size)) > G.chromeLimitSize && confirm(i18n("fileTooLargeStream", ["2G"]))) {
+    // 如果大于阈值 询问是否使用流式下载
+    if (!extra.ffmpeg && !G.downStream && Math.max(...data.map(item => item._size)) > G.chromeLimitSize && confirm(i18n("fileTooLargeStream", [byteToSize(G.chromeLimitSize)]))) {
         extra.downStream = 1;
     }
     // 发送消息给下载器

@@ -91,6 +91,7 @@ let recorderLast = "";  // 最后下载的url
 
 /* mp4 转码工具 */
 let transmuxer = undefined;
+let firstVideoCodec = "";
 
 /* DOM */
 const $fileSize = $("#fileSize");   // 下载文件大小 进度
@@ -523,6 +524,7 @@ hls.on(Hls.Events.BUFFER_CREATED, function (event, data) {
             if (data.tracks.audiovideo?.metadata) {
                 info.append(` ${i18n.resolution}:${data.tracks.audiovideo.metadata.width} x ${data.tracks.audiovideo.metadata.height}`);
             }
+            firstVideoCodec = data.tracks.audiovideo.codec ?? "";
             if (data.tracks.audiovideo.codec && data.tracks.audiovideo.codec.startsWith("hvc1")) {
                 info.append(` <b>${i18n.hevcTip}</b>`);
             }
@@ -536,6 +538,7 @@ hls.on(Hls.Events.BUFFER_CREATED, function (event, data) {
         if (hls.levels[currentLevel]?.bitrate) {
             info.append(` ${i18n.bitrate}:${parseInt(hls.levels[currentLevel].bitrate / 1000)} Kbps`);
         }
+        firstVideoCodec = data.tracks.video?.codec ?? "";
         if (data.tracks?.video?.codec && data.tracks.video.codec.startsWith("hvc1")) {
             info.append(` <b>${i18n.hevcTip}</b>`);
         }
@@ -1104,7 +1107,7 @@ $("#mergeTs").click(async function () {
     $progress.html(`0/${end - start + 1}`); // 进度显示
 
     // 估算检查文件大小
-    if (!$("#StreamSaver").prop("checked") && estimateFileSize > G.chromeLimitSize && confirm(i18n("fileTooLargeStream", ["2G"]))) {
+    if (!$("#StreamSaver").prop("checked") && estimateFileSize > G.chromeLimitSize && confirm(i18n("fileTooLargeStream", [byteToSize(G.chromeLimitSize)]))) {
         $("#StreamSaver").prop("checked", true);
     }
 
@@ -1532,10 +1535,14 @@ function mergeTsNew(down) {
          * firefox 不受影响
          */
         if (!G.isFirefox && fileBlob.size > G.chromeLimitSize) {
-            $progress.html(i18n("fileTooLarge", ["2G"]));
-            apiDownload(fileBlob, fileName, ext);
-            down.destroy();
-            return;
+            const fileSizeText = byteToSize(fileBlob.size);
+            const limitSizeText = byteToSize(G.chromeLimitSize);
+            if (!confirm(i18n("fileTooLargeFfmpegConfirm", [fileSizeText, limitSizeText]))) {
+                $progress.html(i18n("fileTooLarge", [limitSizeText]));
+                apiDownload(fileBlob, fileName, ext);
+                down.destroy();
+                return;
+            }
         }
         if (customFilename && originalExt) {
             fileName += "." + originalExt;
@@ -1609,7 +1616,12 @@ function initDownload() {
     fileStream = undefined; // 流式下载 文件流
     // 转码工具初始化
     transmuxer = undefined;
-    // 避免下载中途 更改设置 暂时储存下载配置
+    const ffmpegChecked = $("#ffmpeg").prop("checked");
+    const preferLocalMp4 = ffmpegChecked && !_ffmpeg && !isSendFfmpeg && firstVideoCodec && !firstVideoCodec.startsWith("hvc1");
+    if (preferLocalMp4) {
+        $("#ffmpeg").prop("checked", false);
+        $("#mp4").prop("checked", true);
+    }
     downSet.mp4 = $("#mp4").prop("checked");
     downSet.onlyAudio = $("#onlyAudio").prop("checked");
 }
