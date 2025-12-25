@@ -794,6 +794,17 @@
       }
     }
   },
+  "fileTooLargeFfmpegConfirm": {
+    "message": "Dosya boyutu $file$, Chrome güvenli sınırı $limit$ değerini aşıyor. Çevrimiçi FFmpeg ile devam edilsin mi?",
+    "placeholders": {
+      "file": {
+        "content": "$1"
+      },
+      "limit": {
+        "content": "$2"
+      }
+    }
+  },
   "fileTooLargeStream": {
     "message": "$size$ değerinden büyük dosya, akış indirmeyi etkinleştir?",
     "placeholders": {
